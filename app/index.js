@@ -3,19 +3,19 @@
  */
 import React from 'react';
 import ReactDom from 'react-dom';
+import {createStore,combineReducers,applyMiddleware} from 'redux';
+import { Provider } from 'react-redux'
+import createLogger from 'redux-logger';
+import * as Reducers  from './reducers';
+import App from './App';
 
-import { Router, Route,browserHistory } from 'react-router';
+const logger = createLogger();
 
-class App extends React.Component{
-    render(){
-        return(
-            <h1>React模版项目</h1>
-        )
-    }
-}
+const store = createStore(combineReducers(Reducers),{},applyMiddleware(logger));
 
 ReactDom.render(
-    <Router history={browserHistory}>
-        <Route path="/" component={App} />
-    </Router>
-,document.getElementById('app'));
+    <Provider store = {store}>
+       <App />
+    </Provider>,
+    document.getElementById('app')
+);
